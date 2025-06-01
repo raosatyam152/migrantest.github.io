@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Miss Migrant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="csrf-token" content="YOUR_CSRF_TOKEN">
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <header role="banner">
+        <h1>Miss Migrant</h1>
+        <div class="header-controls">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                <svg class="sun-icon" viewBox="0 0 24 24">
+                    <path d="M12 3v2M12 19v2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M3 12h2M19 12h2M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+                <svg class="moon-icon" viewBox="0 0 24 24">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+            </button>
+            <nav role="navigation" aria-label="Main navigation">
+            <ul>
+                <li><a href="#stories">Stories</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#map">Interactive Map</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </nav>
+        </div>
+    </header>
+
+    <div class="loading">
+        <div class="loading-animation"></div>
+    </div>
+
+    <section class="hero parallax">
+        <div class="hero-content">
+            <h1 data-translate="hero_title">Migrant Resource Hub</h1>
+            <p class="hero-subtitle" data-translate="hero_subtitle">Connecting Communities, Building Futures</p>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <span class="stat-number">50,000+</span>
+                    <span class="stat-label">Migrants Supported</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">200+</span>
+                    <span class="stat-label">Service Providers</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">25</span>
+                    <span class="stat-label">Cities Covered</span>
+                </div>
+            </div>
+            <button class="cta-button">Find Resources Near You</button>
+        </div>
+    </section>
+
+    <main id="main">
+        <section id="stories" aria-labelledby="stories-heading">
+            <h2 id="stories-heading">User Stories</h2>
+            <div id="user-stories" role="feed" aria-label="User stories feed">
+                <article class="story-card" role="article">
+                    <h3>Satish Kumar</h3>
+                    <p class="story-content">Left my village to follow my dream opportunities in Delhi. I found work in construction and now sending my small contribution home.</p>
+                    <div class="story-meta">
+                        <span class="date">March 2024</span>
+                        <button class="like-btn" aria-label="Like this story">❤ 24</button>
+                    </div>
+                </article>
+            </div>
+            <button onclick="addStory()" aria-label="Share your story">Share Your Experience with us</button>
+        </section>
+
+        <section id="resources" class="resource-section">
+            <div class="container">
+    <h2>Resource Hub</h2>
+                <div class="resource-grid">
+                    <div class="resource-card">
+                        <h3>Legal Resources</h3>
+                        <ul>
+                            <li>Immigration Law Guide</li>
+                            <li>Legal Aid Services</li>
+                            <li>Documentation Help</li>
+                            <li>Rights & Protections</li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3>Education</h3>
+                        <ul>
+                            <li>Language Classes</li>
+                            <li>Skills Training</li>
+                            <li>Educational Programs</li>
+                            <li>Certification Courses</li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3>Healthcare</h3>
+                        <ul>
+                            <li>Medical Services</li>
+                            <li>Mental Health Support</li>
+                            <li>Health Insurance Info</li>
+                            <li>Wellness Programs</li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3>Housing</h3>
+                        <ul>
+                            <li>Housing Assistance</li>
+                            <li>Rental Resources</li>
+                            <li>Shelter Services</li>
+                            <li>Housing Rights</li>
+    </ul>
+                    </div>
+                </div>
+            </div>
+</section>
+
+        <section id="community" aria-labelledby="community-heading">
+            <h2 id="community-heading">Community Engagement</h2>
+    <div id="forums">
+                <div class="forum-header">
+                    <h3 id="forums-heading">Forums</h3>
+                    <button id="refresh-posts" aria-label="Refresh posts">
+                        <span class="refresh-icon">🔄</span>
+                    </button>
+                </div>
+                <div id="forum-posts" role="feed" aria-label="Forum posts">
+                    <article role="article">
+                        <h4>Sample Post Title</h4>
+                        <p>This is a sample post content to meet ARIA requirements.</p>
+                    </article>
+                </div>
+                <form id="forum-form" class="forum-input-container">
+                    <input type="text" id="forum-input" placeholder="Share your thoughts..." aria-label="Enter your message">
+                    <button type="submit" aria-label="Post message">Post</button>
+                </form>
+    </div>
+            <div id="events" aria-labelledby="events-heading">
+                <h3 id="events-heading">Upcoming Events</h3>
+                <ul role="list">
+            <li>Community Meetup - Date: TBD</li>
+            <li>Language Exchange - Date: TBD</li>
+        </ul>
+    </div>
+</section>
+
+        <section id="map" aria-labelledby="map-heading">
+            <h2 id="map-heading">Interactive Map</h2>
+            <div id="map-container" role="region" aria-label="Interactive location map"></div>
+        </section>
+
+        <section id="services" aria-labelledby="services-heading">
+            <h2 id="services-heading">Local Services Directory</h2>
+            <div class="service-search">
+                <input type="text" id="location-input" placeholder="Enter your location or allow GPS access">
+                <button onclick="locationServices.requestLocationPermission()" aria-label="Use current location">
+                    <i class="fas fa-location-arrow"></i> Use My Location
+                </button>
+            </div>
+            <div class="service-categories">
+                <div class="service-category" data-category="housing">
+                    <h3>Housing Assistance</h3>
+                    <ul class="service-list" id="housing-services"></ul>
+                </div>
+                <div class="service-category" data-category="employment">
+                    <h3>Employment Resources</h3>
+                    <ul class="service-list" id="employment-services"></ul>
+                </div>
+                <div class="service-category" data-category="education">
+                    <h3>Education Services</h3>
+                    <ul class="service-list" id="education-services"></ul>
+                </div>
+                <div class="service-category" data-category="healthcare">
+                    <h3>Healthcare Facilities</h3>
+                    <ul class="service-list" id="healthcare-services"></ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="jobs" aria-labelledby="jobs-heading">
+            <h2 id="jobs-heading">Job Opportunities</h2>
+            <div class="job-filters">
+                <div class="search-container">
+                    <input type="text" id="job-search" placeholder="Search jobs..." aria-label="Search jobs">
+                    <button class="search-btn" aria-label="Search">
+                        <span class="search-icon">🔍</span>
+                    </button>
+                </div>
+                <div class="filter-container">
+                    <select id="job-category" aria-label="Filter by category">
+                        <option value="all">All Categories</option>
+                        <option value="construction">Construction</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="hospitality">Hospitality</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="retail">Retail</option>
+                    </select>
+                </div>
+            </div>
+            <div id="job-listings" role="feed" aria-label="Job listings">
+                <article role="article">
+                    <h3>Sample Job Title</h3>
+                    <p>Job description goes here. Apply now!</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="training" aria-labelledby="training-heading">
+            <h2 id="training-heading">Skills Development</h2>
+            <div class="training-categories">
+                <div class="training-card">
+                    <h3>Language Courses</h3>
+                    <ul class="course-list">
+                        <li>Basic English Communication</li>
+                        <li>Business English</li>
+                        <li>Local Language Integration</li>
+                    </ul>
+                    <button class="enroll-btn">Enroll Now</button>
+                </div>
+                <div class="training-card">
+                    <h3>Vocational Training</h3>
+                    <ul class="course-list">
+                        <li>Digital Skills</li>
+                        <li>Healthcare Assistant</li>
+                        <li>Construction Safety</li>
+                    </ul>
+                    <button class="enroll-btn">Enroll Now</button>
+                </div>
+            </div>
+        </section>
+        
+        <section id="emergency" aria-labelledby="emergency-heading" class="emergency-section">
+            <h2 id="emergency-heading">Emergency Support</h2>
+            <div class="emergency-contacts">
+                <div class="emergency-card">
+                    <h3>24/7 Helpline</h3>
+                    <p class="phone">1-800-MIGRANT</p>
+                    <button class="call-now">Call Now</button>
+                </div>
+                <div class="emergency-card">
+                    <h3>Legal Emergency</h3>
+                    <p class="phone">1-800-LEGAL-AID</p>
+                    <button class="call-now">Get Help</button>
+                </div>
+            </div>
+            <div class="emergency-map" id="emergency-services-map"></div>
+        </section>
+
+        <section id="resume-builder" aria-labelledby="resume-builder-heading">
+            <h2 id="resume-builder-heading">Resume Builder</h2>
+            <div class="resume-builder-container">
+                <form id="resume-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="education">Education</label>
+                        <textarea id="education" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="experience">Work Experience</label>
+                        <textarea id="experience" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="skills">Skills</label>
+                        <textarea id="skills" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="cta-button">Generate Resume</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="translator" aria-labelledby="translator-heading">
+            <h2 id="translator-heading">Translator</h2>
+            <div class="translator-container">
+                <form id="translator-form">
+                    <div class="form-group">
+                        <label for="text-to-translate">Text to Translate</label>
+                        <textarea id="text-to-translate" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="target-language">Target Language</label>
+                        <select id="target-language" required>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="it">Italian</option>
+                            <option value="pt">Portuguese</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="cta-button">Translate</button>
+                </form>
+                <div id="translation-result" class="translation-result"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Miss Migrant</h3>
+                    <p>Empowering migrants with resources and support</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                        <li><a href="#community">Community</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Email: support@missmigrant.com</p>
+                    <p>Phone: +1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Miss Migrant. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
